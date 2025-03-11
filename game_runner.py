@@ -1,7 +1,7 @@
 import pygame
 from config import Config
 from card import Deck
-
+from game_start_display import StartUI
 class GameRunner:
     def __init__(self):
         pygame.init()
@@ -12,9 +12,14 @@ class GameRunner:
         self.__clock = pygame.time.Clock()
         self.__running = True
         self.__deck = Deck()
+        self.__start_ui = StartUI()
+
+    def __init_game(self):
+        pass
 
     def __start_game(self):
-        pass
+        self.__screen.fill((232, 226, 211))
+        self.__start_ui.render(self.__screen)
 
     def __game_update(self):
         for event in pygame.event.get():
@@ -29,7 +34,7 @@ class GameRunner:
 
     def run(self):
         self.__start_game()
-        self.__deck.display_all_card(self.__screen)
+        # self.__deck.display_all_card(self.__screen)
 
         while self.__running:
             self.__game_update()
