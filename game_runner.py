@@ -1,8 +1,13 @@
 import pygame
 from config import Config
-from card import Deck
-from game_start_display import StartUI
+from game_card import Deck
+from game_menu import GameMenu
+from game_ui import GameUI
+
 class GameRunner:
+
+
+
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Black Jackkkkkkkkkkk")
@@ -11,22 +16,33 @@ class GameRunner:
 
         self.__clock = pygame.time.Clock()
         self.__running = True
-        self.__deck = Deck()
-        self.__start_ui = StartUI()
+        self.__game_menu = GameMenu()
+        self.__game_ui = GameUI()
+        self.__status = "MENU"
+        # * status -> MENU, INGAME
 
     def __init_game(self):
-        pass
+        self.__deck = Deck()
 
     def __start_game(self):
-        self.__screen.fill((232, 226, 211))
-        self.__start_ui.render(self.__screen)
+        self.__screen.fill(Config.BG_COLOR)
+        self.__game_menu.render(self.__screen)
 
     def __game_update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__running = False
-
-
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                print(f"Click CLick at : {pos}")
+                if self.__status == "MENU":
+                    name_butt = self.__game_menu.onClick(pos)
+                    if name_butt == "PLAY":
+                        self.__game_ui.render(self.__screen)
+                        self.__status = "INGAME"
+                        self.__init_game()
+                elif self.__status == "INGAME":
+                    pass
         # game render
 
         pygame.display.update()
