@@ -5,9 +5,6 @@ from game_menu import GameMenu
 from game_ui import GameUI
 
 class GameRunner:
-
-
-
     def __init__(self):
         pg.init()
         pg.display.set_caption("Black Jackkkkkkkkkkk")

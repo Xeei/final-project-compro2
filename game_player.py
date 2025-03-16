@@ -1,8 +1,7 @@
 from game_card import Deck
 
 class Entity:
-    def __init__(self, name):
-        self.__name = name
+    def __init__(self):
         self._cards = []
 
     def deal_card(self, deck:  Deck):
@@ -10,11 +9,10 @@ class Entity:
         self._cards.append(card)
 
 class Dealer(Entity):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__()
 
     def show_card(self):
-        print(self.__name)
         for _, card in enumerate(self._cards):
             if _ == 0:
                 print(card)
@@ -22,11 +20,10 @@ class Dealer(Entity):
                 print("xx")
                 
 class Player(Entity):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__()
 
     def show_card(self):
-        print(self.__name)
         for _, card in enumerate(self._cards):
             print(card)
 
