@@ -28,12 +28,23 @@ class Deck:
     symbols = ["S", "H", "D", "C"]
     def __init__(self):
         self.__deck = [Card(symbol, number) for number in self.numbers for symbol in self.symbols]
+        self.__back_deck = pg.transform.smoothscale(pg.image.load(os.path.join(Config.image_path, f"purple_back.png")), (100, 150))
         self.suffle()
+
+    @property
+    def remain(self):
+        return len(self.__deck)
 
     def suffle(self):
         random.shuffle(self.__deck)
 
     def display_all_card(self, screen):
-
         for c in self.__deck:
             c.show_card(screen)
+
+    def render(self, screen):
+        screen.blit(self.__back_deck, (int(Config.screen_size[0]*0.85), int(Config.screen_size[1]*0.5-150/2)))
+        
+    def deal(self):
+        card = self.__deck.pop()
+        return card

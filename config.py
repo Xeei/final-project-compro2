@@ -3,3 +3,7 @@ class Config:
     image_path = 'image/card'
     BG_COLOR = (232, 226, 211)
 
+class GameState:
+    MENU = "MENU"
+    INGAME = "INGAME"
+    REPORT = "REPORT"
