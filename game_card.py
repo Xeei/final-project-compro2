@@ -20,8 +20,6 @@ class Card:
     def show_card(self, screen, position):
         screen.blit(self.__image, (100,200))
 
-
-
     def __str__(self):
         return f"{self.__symbol}:{self.__number} -> {",".join(str(score) for score in self.get_score())}"
 
