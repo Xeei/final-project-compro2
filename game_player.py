@@ -1,4 +1,5 @@
 from game_card import Deck, Card
+
 class Entity:
     def __init__(self, screen):
         self._cards: list[Card] = []
