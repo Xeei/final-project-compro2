@@ -8,7 +8,12 @@ class Card:
     def __init__(self, symbol: str, number: str):
         self.__symbol = symbol
         self.__number = number
-        self.__image = pg.transform.smoothscale(pg.image.load(os.path.join(Config.image_path, f"{self.__number+self.__symbol}.png")), (100, 150))
+        image_path = os.path.join(Config.image_path, f"{self.__number+self.__symbol}.png")
+        self.__image = GameUtils.load_card_image(image_path, 150)
+
+    @property
+    def image(self):
+        return self.__image
     def get_score(self):
         if self.__number in ["J", "Q", "K"]:
             return [10]
@@ -27,7 +32,7 @@ class Deck:
     numbers = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
     symbols = ["S", "H", "D", "C"]
     __deck_path = os.path.join(Config.image_path, f"purple_back.png")
-    __deck_hieght = 200
+    __deck_hieght = 150
     def __init__(self):
         self.__deck = [Card(symbol, number) for number in self.numbers for symbol in self.symbols]
         self.__back_deck = GameUtils.load_card_image(self.__deck_path, self.__deck_hieght)

@@ -1,5 +1,8 @@
 from game_card import Deck, Card
-
+from config import Config
+from game_utils import GameUtils
+import pygame as pg
+import os
 class Entity:
     def __init__(self, screen):
         self._cards: list[Card] = []
@@ -30,26 +33,40 @@ class Entity:
         if self.score > 21:
             return True
         return False
+    
+    def render(self, x, y, is_dealer=False, is_end_phase=False):
+        for index, card in enumerate(self._cards):
+            if is_dealer and index == 1 and not is_end_phase:
+                back_card_path = os.path.join(Config.image_path, f"purple_back.png")
+                hidden_card = GameUtils.load_card_image(back_card_path, 150)
+                self._screen.blit(hidden_card, (x + index * 80, y))
+            else:
+                self._screen.blit(card.image, (x + index * 80, y)) 
 
 class Dealer(Entity):
     def __init__(self, screen):
         super().__init__(screen)
 
-    def show_card(self):
+    def show_card(self, is_end_phase=False):
+        print("Dealer Card:")
+        print("="*30)
         for _, card in enumerate(self._cards):
-            if _ == 0:
+            if _ == 0 or is_end_phase:
                 print(card)
             else:
                 print("xx")
+        print(self.score)
+        print("="*30)
+
                 
 class Player(Entity):
     def __init__(self, screen):
         super().__init__(screen)
 
     def show_card(self):
+        print("Player Card:")
+        print("="*30)
         for _, card in enumerate(self._cards):
             print(card)
         print(self.score)
-
-    def render(self):
-        pass
+        print("="*30)
