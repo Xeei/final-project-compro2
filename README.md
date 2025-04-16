@@ -33,11 +33,14 @@
 
 ### Step to play the game
 
-1. Menu Page
-    - click on play text to start the game
+1. Menu Page - click on play text to start the game
+   <image src="./screenshots/gameplay/start_menu.png">
 2. Player phase
+
     - `H` for hit a card (deal a card)
     - `S` for stand (confirm hand)
+      <image src="./screenshots/gameplay/ingame.png">
+
 3. Dealer phase
     - dealer will deal a card until score over `17`
 4. End phase
@@ -45,9 +48,9 @@
     - if player is `bust` player will lost immediately
     - if player score are the same as dealer will `tie`
     - if player score are `more than dealer` and `not over 21` player will win
-5. Choice
     - `R` press `R` for restart
     - `Q` for quit game
+      <image src="./screenshots/gameplay/result_page.png">
 
 ## Credits
 
