@@ -34,7 +34,6 @@ class GameDb:
             print(f"Error creating table: {e}")
 
     def read_db(self, query: str):
-        """ Read from the database and return results as a pandas DataFrame """
         try:
             return pd.read_sql_query(query, self.__db)
         except Exception as e:
@@ -42,16 +41,13 @@ class GameDb:
             return None
 
     def close(self):
-        """ Close the database connection """
         if self.__db:
             self.__db.close()
 
-# Example Usage:
 db_instance = GameDb()
-db_instance.create_table()  # Create the table if it doesn't exist
+db_instance.create_table()
 
-# Check if table creation worked by reading from it
 df = db_instance.read_db("SELECT * FROM games")
 print(df)
 
-db_instance.close()  # Close connection when done
+db_instance.close()

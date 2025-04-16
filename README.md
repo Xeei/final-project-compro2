@@ -6,15 +6,52 @@
 
 ---
 
-### use .venv to run project
+### use miniconda to run game
 
-1. set venv
-   `python3 -m venv .venv`
-   python version 3.13.0
+1. set up env
+    ```bash
+    conda env create -f environment.yml
+    ```
 2. activate venv
-   `source .venv/bin/activate`
-3. install lib
-   `pip3 install -r requirements.txt`
+    ```bash
+    conda activate blackjack
+    ```
+
+### Start game
+
+1. command
+    ```bash
+    python src/game_runner.py
+    ```
+
+## How to play game
+
+---
+
+### word you should know
+
+-   `hit` deal a card
+-   `stand` confirm hand
+-   `bust` score over **_21_**
+-   `tie` player score and dealer score are the same (draw)
+
+### Step to play the game
+
+1. Menu Page
+    - click on play text to start the game
+2. Player phase
+    - `H` for hit a card (deal a card)
+    - `S` for stand (confirm hand)
+3. Dealer phase
+    - dealer will deal a card until score over `17`
+4. End phase
+    - if dealer is `bust` player will win
+    - if player is `bust` player will lost immediately
+    - if player score are the same as dealer will `tie`
+    - if player score are `more than dealer` and `not over 21` player will win
+5. Choice
+    - `R` press `R` for restart
+    - `Q` for quit game
 
 ## Credits
 
