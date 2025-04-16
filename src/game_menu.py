@@ -14,6 +14,7 @@ class Button:
         return self.__rect.collidepoint(pos)
 
     def render(self, screen):
+
         screen.blit(self.__text, self.__rect)
 
         # pg.draw.rect(screen, "black", [self.__position[0], self.__position[1], self.__button_size[0], self.__button_size[1]])
@@ -22,7 +23,8 @@ class Button:
 class GameMenu:
     __x_screen, __y_screen = Config.screen_size
     __play_butt_position = (__x_screen//2, int(__y_screen*0.4))
-    def __init__(self):
+    def __init__(self, screen):
+        self.__screen = screen
         self.__head_size = (600, 160)
         self.__head_image = pg.transform.smoothscale(pg.image.load('image/head.png'), self.__head_size)
         self.__play_butt = Button("PLAY", self.__play_butt_position)
@@ -30,14 +32,16 @@ class GameMenu:
     def onClick(self, pos):
         if self.__play_butt.is_in_bond(pos):
             return "PLAY"
-    def render(self, screen):
+    def render(self):
         x_screen, y_screen = Config.screen_size
 
+        self.__screen.fill(Config.BG_COLOR)
+        
         """display black jack head text"""
-        screen.blit(self.__head_image, (x_screen/2-self.__head_size[0]/2, int(y_screen*0.05)))
+        self.__screen.blit(self.__head_image, (x_screen/2-self.__head_size[0]/2, int(y_screen*0.05)))
 
         """display play button"""
-        self.__play_butt.render(screen)
+        self.__play_butt.render(self.__screen)
         # play_butt_size = (300, 50)
         # pg.draw.rect(screen, "black", [x_screen/2-play_butt_size[0]/2, int(y_screen*0.4), play_butt_size[0], play_butt_size[1]])
 
