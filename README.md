@@ -6,15 +6,11 @@
 
 ---
 
-### use miniconda to run game
+### Installation
 
 1. set up env
     ```bash
-    conda env create -f environment.yml
-    ```
-2. activate venv
-    ```bash
-    conda activate blackjack
+    pip install -r requirements.txt
     ```
 
 ### Start game
