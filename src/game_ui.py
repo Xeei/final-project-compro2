@@ -87,7 +87,17 @@ class GameUI:
         GameUtils.text_to_screen(self.__screen, "`Q` for Quit game", Config.screen_size[0]//2, 480, color=(255,255,255), align="center")
 
     def renderKeyBind(self):
-        pass
+        "bg key bind"
+        key_bind = pg.Rect(19, 572, 438, 210)
+        pg.draw.rect(self.__screen, "#D9D9D9", key_bind, border_radius=10)
+
+        "Hit key bind"
+        GameUtils.text_to_screen(self.__screen, "H", 50, 627, color=(0,0,0), align="center", draw_border=True,border_color=(0,0,0), size=40)
+        GameUtils.text_to_screen(self.__screen, "Hit (deal a card)", 220, 627, color=(0,0,0), align="center", size=40)
+        
+        "Stand key bind"
+        GameUtils.text_to_screen(self.__screen, "S", 50, 725, color=(0,0,0), align="center", draw_border=True,border_color=(0,0,0), size=40)
+        GameUtils.text_to_screen(self.__screen, "Stand (confirm card)", 260, 725, color=(0,0,0), align="center", size=40)
 
     def onKeyDown(self, key):
         if self.__phase == GamePhase.PLAYER:
@@ -103,7 +113,7 @@ class GameUI:
         self.__dealer.render(x=526, y=59, is_dealer=True, is_end_phase=(self.__phase == GamePhase.END))
 
         self.__player.render(x=526, y=595)
-        
+        self.renderKeyBind()
         if self.__phase == GamePhase.DEALER:
             self.__dealer_turn()
         elif self.__phase == GamePhase.END:
