@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3 as sql
 from threading import Lock
+import uuid
 
 class GameDb:
     _instance = None
@@ -19,11 +20,14 @@ class GameDb:
 
     def create_table(self):
         query = """
-        CREATE TABLE IF NOT EXISTS games (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            genre TEXT,
-            release_year INTEGER
+        create table games
+        (
+            game_id      TEXT not null
+                primary key,
+            start_time   DATETIME,
+            end_time     DATETIME,
+            player_score INTEGER,
+            dealer_score INTEGER
         );
         """
         try:
@@ -32,6 +36,22 @@ class GameDb:
             print("Table 'games' created successfully.")
         except Exception as e:
             print(f"Error creating table: {e}")
+
+    def insert_game(self, start_time, end_time, player_score, dealer_score):
+        query = """
+        INSERT INTO games (game_id, start_time, end_time, player_score, dealer_score)
+        VALUES (?, ?, ?, ?, ?);
+        """
+        game_id = str(uuid.uuid4())
+
+        try:
+            self.__cursor.execute(query, (game_id, start_time, end_time, player_score, dealer_score))
+            self.__db.commit()
+            print(f"Game inserted with ID: {game_id}")
+            return game_id
+        except Exception as e:
+            print(f"Error inserting game: {e}")
+            return None
 
     def read_db(self, query: str):
         try:
@@ -43,11 +63,3 @@ class GameDb:
     def close(self):
         if self.__db:
             self.__db.close()
-
-db_instance = GameDb()
-db_instance.create_table()
-
-df = db_instance.read_db("SELECT * FROM games")
-print(df)
-
-db_instance.close()
