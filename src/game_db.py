@@ -2,6 +2,7 @@ import pandas as pd
 import sqlite3 as sql
 from threading import Lock
 import uuid
+from game_card import Card
 
 class GameDb:
     _instance = None
@@ -20,7 +21,7 @@ class GameDb:
 
     def create_table(self):
         query = """
-        create table games
+        CREATE TABLE IF NOT EXISTS games
         (
             game_id      TEXT not null
                 primary key,
@@ -28,6 +29,17 @@ class GameDb:
             end_time     DATETIME,
             player_score INTEGER,
             dealer_score INTEGER
+        );
+
+        CREATE TABLE IF NOT EXISTS game_hand
+        (
+            game_id     INTEGER
+                references games,
+            card_symbol TEXT(1),
+            action      TEXT(5),
+            deal_at     DATETIME,
+            card_number TEXT(2),
+            time_use    integer
         );
         """
         try:
@@ -52,6 +64,23 @@ class GameDb:
         except Exception as e:
             print(f"Error inserting game: {e}")
             return None
+        
+    def insert_hand(game_id, hand: list[Card]):
+        query = """
+        INSERT INTO games (game_id, start_time, end_time, player_score, dealer_score)
+        VALUES (?, ?, ?, ?, ?);
+        """
+        game_id = str(uuid.uuid4())
+
+        try:
+            self.__cursor.execute(query, (game_id, start_time, end_time, player_score, dealer_score))
+            self.__db.commit()
+            print(f"Game inserted with ID: {game_id}")
+            return game_id
+        except Exception as e:
+            print(f"Error inserting game: {e}")
+            return None
+
 
     def read_db(self, query: str):
         try:

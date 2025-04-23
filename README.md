@@ -8,17 +8,43 @@
 
 ### Installation
 
-1. set up env
-    ```bash
-    pip install -r requirements.txt
-    ```
+1. activate .venv
+
+    - window
+
+        ```bash
+        python -m venv .venv
+        .venv\Scripts\activate
+        ```
+
+    - macOS/Linux
+
+        ```bash
+        python3 -m venv .venv
+        source .venv/bin/activate
+        ```
+
+2. set up env
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Start game
 
 1. command
-    ```bash
-    python src/game_runner.py
-    ```
+
+    - window
+
+        ```bash
+        python src/game_runner.py
+        ```
+
+    - macOS/Linux
+
+        ```bash
+        python3 src/game_runner.py
+        ```
 
 ## How to play game
 

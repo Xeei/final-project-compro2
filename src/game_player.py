@@ -3,13 +3,29 @@ from config import Config
 from game_utils import GameUtils
 import pygame as pg
 import os
+
+class Event:
+    def __init__(self, name, card, time_use, before_score, after_score):
+        self.name: str = "" # deal | stand | f2c(first two card)
+        self.card: Card = None
+        self.time_use = 0 # compute from previous event
+        self.before_score = 0
+        self.after_score = 0
+
 class Entity:
     def __init__(self, screen):
         self._cards: list[Card] = []
         self._screen = screen
-    def deal_card(self, deck:  Deck):
+        self._track_events: list[Event] = []
+
+    def deal_card(self, deck:  Deck, is_init=False):
+        # ev = Event()
         card = deck.deal()
         self._cards.append(card)
+        # test = now
+        if is_init:
+            # self._track_events.append(Event())
+            pass
 
     @property
     def score(self):

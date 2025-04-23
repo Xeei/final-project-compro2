@@ -28,8 +28,8 @@ class GameUI:
 
     def __deal_init_cards(self):
         for i in range(2):
-            self.__dealer.deal_card(self.__deck)
-            self.__player.deal_card(self.__deck)
+            self.__dealer.deal_card(self.__deck, is_init=True)
+            self.__player.deal_card(self.__deck, is_init=True)
         
         self.__phase = GamePhase.PLAYER   
         print("Enter player phase")
