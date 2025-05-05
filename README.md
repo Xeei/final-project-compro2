@@ -10,14 +10,14 @@
 
 1. activate .venv
 
-    - window
+    - window (cmd not shell!!!)
 
         ```bash
         python -m venv .venv
         .venv\Scripts\activate
         ```
 
-    - macOS/Linux
+    - macOS/Linux (terminal)
 
         ```bash
         python3 -m venv .venv
@@ -25,10 +25,9 @@
         ```
 
 2. set up env
-
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    python -r pip install -r requirements.txt
+    ```
 
 ### Start game
 
@@ -37,13 +36,12 @@ pip install -r requirements.txt
     - window
 
         ```bash
-        python src/game_runner.py
+        python src/main.py
         ```
 
     - macOS/Linux
-
         ```bash
-        python3 src/game_runner.py
+        python3 src/main.py
         ```
 
 ## How to play game
