@@ -14,6 +14,15 @@ class Card:
     @property
     def image(self):
         return self.__image
+    
+    @property
+    def symbol(self):
+        return self.__symbol
+    
+    @property
+    def number(self):
+        return self.__number
+    
     def get_score(self):
         if self.__number in ["J", "Q", "K"]:
             return [10]

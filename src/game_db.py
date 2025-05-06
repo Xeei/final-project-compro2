@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3 as sql
 from threading import Lock
 import uuid
-from game_card import Card
+
 
 class GameDb:
     _instance = None
@@ -65,15 +65,23 @@ class GameDb:
             print(f"Error inserting game: {e}")
             return None
         
-    def insert_hand(game_id, hand: list[Card]):
+    def insert_game_events(self, game_id, events: list):
         query = """
-        INSERT INTO games (game_id, start_time, end_time, player_score, dealer_score)
-        VALUES (?, ?, ?, ?, ?);
+        insert into games_events (game_id, name, card_symbol, card_number, "time", before_score, after_score)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
         """
-        game_id = str(uuid.uuid4())
 
         try:
-            self.__cursor.execute(query, (game_id, start_time, end_time, player_score, dealer_score))
+
+            for ev in events:
+                if ev.name == "stand":
+                    self.__cursor.execute(query, (game_id, ev.name, None, None, 
+                                                ev.time, ev.before_score, ev.after_score))
+                elif ev.name == "hit":
+                    self.__cursor.execute(query, (game_id, ev.name, ev.card.symbol, ev.card.number, 
+                            ev.time, ev.before_score, ev.after_score))
+                else:
+                    raise ValueError("Invalid ev.name")
             self.__db.commit()
             print(f"Game inserted with ID: {game_id}")
             return game_id

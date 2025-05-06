@@ -4,6 +4,7 @@ from game_card import Deck, Card
 from game_player import Player, Dealer
 from game_utils import GameUtils
 from datetime import datetime
+from game_db import GameDb
 class GamePhase:
     DEAL = "DEAL"
     PLAYER = "PLAYER"
@@ -27,7 +28,9 @@ class GameUI:
         self.__phase = GamePhase.DEAL
         self.__bg_image = GameUtils.load_image('image/bg_table2.jpg', Config.screen_size[1], Config.screen_size[0])
         self._start_time = None
-        self._track_event = []
+        self._track_event: list[Event] = []
+        self.__db = GameDb()
+        self.__db_saved = False
 
     def init_game(self):
         print("=====Game init=====")
@@ -37,7 +40,9 @@ class GameUI:
         self.__player = Player(self.__screen)
         self.__dealer = Dealer(self.__screen)
         self._start_time = datetime.now()
+        self._end_time = None
         self._track_event = []
+        self.__db_saved = False
         self.__deal_init_cards()
 
     def __deal_init_cards(self):
@@ -57,8 +62,9 @@ class GameUI:
         
         """give player make decition"""
         if key == pg.K_h: # player choose to hit (deal card)
-            self.__player.deal_card(self.__deck)
+            card = self.__player.deal_card(self.__deck)
             ev.name = "hit"
+            ev.card = card
             if self.__player.is_bust:
                 self.__phase = GamePhase.END
         elif key == pg.K_s: # player choose stand
@@ -109,7 +115,17 @@ class GameUI:
 
         GameUtils.text_to_screen(self.__screen, "Press `R` to play again", Config.screen_size[0]//2, 380, color=(255,255,255), align="center")
         GameUtils.text_to_screen(self.__screen, "`Q` for Quit game", Config.screen_size[0]//2, 480, color=(255,255,255), align="center")
-        [print(ev) for ev in self._track_event]
+        # [print(ev) for ev in self._track_event]
+
+        if not self.__db_saved:
+            self._end_time = datetime.now()
+            game_id = self.__db.insert_game(self._start_time, self._end_time, self.__player.score, self.__dealer.score)
+            # print(game_id)
+            self.__db.insert_game_events(game_id, self._track_event)
+            for ev in self._track_event:
+                print(ev)
+            if game_id:
+                self.__db_saved = True
 
     def renderKeyBind(self):
         "bg key bind"

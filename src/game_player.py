@@ -10,9 +10,10 @@ class Entity:
         self._cards: list[Card] = []
         self._screen = screen
 
-    def deal_card(self, deck:  Deck):
+    def deal_card(self, deck:  Deck) -> Card:
         card = deck.deal()
         self._cards.append(card)
+        return card
 
     @property
     def score(self):
