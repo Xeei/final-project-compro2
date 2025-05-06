@@ -2,26 +2,38 @@ from multiprocessing import Process
 import tkinter as tk
 from game_runner import GameRunner
 
+# prevent pickleable
 def run_game():
     g = GameRunner()
     g.game_loop()
 
-def open_game_window():
-    p = Process(target=run_game)
-    p.start()
 
-def launch_menu():
-    root = tk.Tk()
-    root.title("Blackjack Menu")
-    root.geometry("300x200")
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Blackjack Menu")
+        self.geometry("300x125")
 
-    start_button = tk.Button(root, text="Start Game", command=open_game_window)
-    start_button.pack(pady=20)
+        self.label = tk.Label(self, text="Welcome to my Blackjack game")
+        self.label.pack()
 
-    start_button = tk.Button(root, text="Data", command=open_game_window)
-    start_button.pack(pady=20)
+        self.start_button = tk.Button(self, text="Start Game", command=self.open_game_window)
+        self.start_button.pack()
 
-    root.mainloop()
+        self.data_button = tk.Button(self, text="Data", command=lambda: print("hello"))
+        self.data_button.pack()
+
+        self.exit_button = tk.Button(self, text="Exit", command=self.destroy)
+        self.exit_button.pack()
+
+    def open_game_window(self):
+        p = Process(target=run_game)
+        p.start()
+
+    def run(self):
+        self.mainloop()
+
 
 if __name__ == "__main__":
-    launch_menu()
+    app = App()
+    app.run()

@@ -1,35 +1,49 @@
 import pygame as pg
 from config import Config
-from game_card import Deck
+from game_card import Deck, Card
 from game_player import Player, Dealer
 from game_utils import GameUtils
-
+from datetime import datetime
 class GamePhase:
     DEAL = "DEAL"
     PLAYER = "PLAYER"
     DEALER = "DEALER"
     END = "END"
 
+class Event:
+    def __init__(self):
+        self.name: str = "" # hit | stand | f2c(first two card)
+        self.card: Card = None
+        self.time = None
+        self.before_score = 0
+        self.after_score = 0
+
+    def __str__(self):
+        return f"Name: {self.name}, time: {self.time}, b: {self.before_score}, a: {self.after_score}"
+
 class GameUI:
     def __init__(self, screen):
         self.__screen = screen
         self.__phase = GamePhase.DEAL
         self.__bg_image = GameUtils.load_image('image/bg_table2.jpg', Config.screen_size[1], Config.screen_size[0])
+        self._start_time = None
+        self._track_event = []
 
     def init_game(self):
-        print("Game init")
+        print("=====Game init=====")
         self.__screen.blit(self.__bg_image, (0,0))
         pg.display.flip()
         self.__deck = Deck()
         self.__player = Player(self.__screen)
         self.__dealer = Dealer(self.__screen)
-
+        self._start_time = datetime.now()
+        self._track_event = []
         self.__deal_init_cards()
 
     def __deal_init_cards(self):
         for i in range(2):
-            self.__dealer.deal_card(self.__deck, is_init=True)
-            self.__player.deal_card(self.__deck, is_init=True)
+            self.__dealer.deal_card(self.__deck)
+            self.__player.deal_card(self.__deck)
         
         self.__phase = GamePhase.PLAYER   
         print("Enter player phase")
@@ -37,14 +51,24 @@ class GameUI:
         self.__player.show_card()
 
     def __player_turn(self, key):
-
+        ev = Event()
+        ev.before_score = self.__player.score
+        ev.time = datetime.now()
+        
         """give player make decition"""
         if key == pg.K_h: # player choose to hit (deal card)
             self.__player.deal_card(self.__deck)
+            ev.name = "hit"
             if self.__player.is_bust:
                 self.__phase = GamePhase.END
         elif key == pg.K_s: # player choose stand
             self.__phase = GamePhase.DEALER
+            ev.name = "stand"
+            
+
+        if ev.name:
+            ev.after_score = self.__player.score
+            self._track_event.append(ev)
 
     def __dealer_turn(self):
         while self.__dealer.score < 17:
@@ -85,6 +109,7 @@ class GameUI:
 
         GameUtils.text_to_screen(self.__screen, "Press `R` to play again", Config.screen_size[0]//2, 380, color=(255,255,255), align="center")
         GameUtils.text_to_screen(self.__screen, "`Q` for Quit game", Config.screen_size[0]//2, 480, color=(255,255,255), align="center")
+        [print(ev) for ev in self._track_event]
 
     def renderKeyBind(self):
         "bg key bind"
@@ -118,6 +143,7 @@ class GameUI:
             self.__dealer_turn()
         elif self.__phase == GamePhase.END:
             self.__end_game_ui()
+
 
         pg.display.flip()
 

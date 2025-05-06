@@ -3,29 +3,16 @@ from config import Config
 from game_utils import GameUtils
 import pygame as pg
 import os
-
-class Event:
-    def __init__(self, name, card, time_use, before_score, after_score):
-        self.name: str = "" # deal | stand | f2c(first two card)
-        self.card: Card = None
-        self.time_use = 0 # compute from previous event
-        self.before_score = 0
-        self.after_score = 0
+from datetime import datetime
 
 class Entity:
     def __init__(self, screen):
         self._cards: list[Card] = []
         self._screen = screen
-        self._track_events: list[Event] = []
 
-    def deal_card(self, deck:  Deck, is_init=False):
-        # ev = Event()
+    def deal_card(self, deck:  Deck):
         card = deck.deal()
         self._cards.append(card)
-        # test = now
-        if is_init:
-            # self._track_events.append(Event())
-            pass
 
     @property
     def score(self):
@@ -64,15 +51,16 @@ class Dealer(Entity):
         super().__init__(screen)
 
     def show_card(self, is_end_phase=False):
-        print("Dealer Card:")
-        print("="*30)
-        for _, card in enumerate(self._cards):
-            if _ == 0 or is_end_phase:
-                print(card)
-            else:
-                print("xx")
-        print(self.score)
-        print("="*30)
+        pass
+        # print("Dealer Card:")
+        # print("="*30)
+        # for _, card in enumerate(self._cards):
+        #     if _ == 0 or is_end_phase:
+        #         print(card)
+        #     else:
+        #         print("xx")
+        # print(self.score)
+        # print("="*30)
 
                 
 class Player(Entity):
@@ -80,9 +68,10 @@ class Player(Entity):
         super().__init__(screen)
 
     def show_card(self):
-        print("Player Card:")
-        print("="*30)
-        for _, card in enumerate(self._cards):
-            print(card)
-        print(self.score)
-        print("="*30)
+        pass
+        # print("Player Card:")
+        # print("="*30)
+        # for _, card in enumerate(self._cards):
+        #     print(card)
+        # print(self.score)
+        # print("="*30)
