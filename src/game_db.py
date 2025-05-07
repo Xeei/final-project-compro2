@@ -117,7 +117,30 @@ class GameDb:
             print(f"Error reading player_summary_result : {e}")
             return pd.DataFrame({})
         
-    
+    def player_games(self):
+        try:
+            query = """
+            select *
+            from games
+            """
+            df = pd.read_sql_query(query, self.__db)
+            return df
+        except Exception as e:
+            print(f"Error reading player_games : {e}")
+            return pd.DataFrame({})
+        
+    def player_game_events_by_game_id(self, game_id):
+        try:
+            query = f"""
+            select *
+            from games_events
+            where game_id = '{game_id}'
+            """
+            df = pd.read_sql_query(query, self.__db)
+            return df
+        except Exception as e:
+            print(f"Error reading player_games : {e}")
+            return pd.DataFrame({})
         
     def read_db(self, query: str):
         try:
