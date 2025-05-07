@@ -101,14 +101,19 @@ class GameUI:
         self.__screen.blit(overlay, (0, 0))
 
         player_status = ""
+        result = ""
         if self.__player.is_bust:
             player_status = "You Lost!"
+            result = "lost"
         elif self.__dealer.is_bust or p_score > d_score:
             player_status = "You Win!"
+            result = "win"
         elif d_score > p_score:
             player_status = "You Lost!"
+            result = "lost"
         else:
             player_status = "It's a Tie!"
+            result = "tie"
 
         GameUtils.text_to_screen(self.__screen, player_status, Config.screen_size[0]//2, 200, color=(255,255,255), align="center", size=60)
         GameUtils.text_to_screen(self.__screen, 'Score: '+str(p_score), Config.screen_size[0]//2, 264, color=(255,255,255), align="center", size=60)
@@ -119,7 +124,7 @@ class GameUI:
 
         if not self.__db_saved:
             self._end_time = datetime.now()
-            game_id = self.__db.insert_game(self._start_time, self._end_time, self.__player.score, self.__dealer.score)
+            game_id = self.__db.insert_game(self._start_time, self._end_time, self.__player.score, self.__dealer.score, result)
             # print(game_id)
             self.__db.insert_game_events(game_id, self._track_event)
             for ev in self._track_event:

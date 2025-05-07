@@ -21,27 +21,29 @@ class GameDb:
 
     def create_table(self):
         query = """
-        CREATE TABLE IF NOT EXISTS games
-        (
-            game_id      TEXT not null
-                primary key,
-            start_time   DATETIME,
-            end_time     DATETIME,
-            player_score INTEGER,
-            dealer_score INTEGER
-        );
+            create table games
+            (
+                game_id      TEXT not null
+                    primary key,
+                start_time   DATETIME,
+                end_time     DATETIME,
+                player_score INTEGER,
+                dealer_score INTEGER,
+                result       TEXT(10)
+            );
 
-        CREATE TABLE IF NOT EXISTS game_hand
-        (
-            game_id     INTEGER
-                references games,
-            card_symbol TEXT(1),
-            action      TEXT(5),
-            deal_at     DATETIME,
-            card_number TEXT(2),
-            time_use    integer
-        );
-        """
+            create table games_events
+            (
+                game_id      INTEGER
+                    references games,
+                name         TEXT(10),
+                card_symbol  TEXT(1),
+                card_number  TEXT(2),
+                time         DATETIME,
+                before_score INTEGER,
+                after_score  INTEGER
+            );
+            """
         try:
             self.__cursor.execute(query)
             self.__db.commit()
@@ -49,15 +51,15 @@ class GameDb:
         except Exception as e:
             print(f"Error creating table: {e}")
 
-    def insert_game(self, start_time, end_time, player_score, dealer_score):
+    def insert_game(self, start_time, end_time, player_score, dealer_score, result):
         query = """
-        INSERT INTO games (game_id, start_time, end_time, player_score, dealer_score)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO games (game_id, start_time, end_time, player_score, dealer_score, result)
+        VALUES (?, ?, ?, ?, ?, ?);
         """
         game_id = str(uuid.uuid4())
 
         try:
-            self.__cursor.execute(query, (game_id, start_time, end_time, player_score, dealer_score))
+            self.__cursor.execute(query, (game_id, start_time, end_time, player_score, dealer_score, result))
             self.__db.commit()
             print(f"Game inserted with ID: {game_id}")
             return game_id
@@ -89,7 +91,34 @@ class GameDb:
             print(f"Error inserting game: {e}")
             return None
 
-
+    def player_score_fraquency(self) -> pd.DataFrame:
+        try:
+            query = """
+            select player_score
+            from games
+            order by player_score
+            """
+            df = pd.read_sql_query(query, self.__db)
+            return df
+        except Exception as e:
+            print(f"Error reading player_score_fraquency : {e}")
+            return pd.DataFrame({})
+        
+    def player_summary_result(self) -> pd.DataFrame:
+        try:
+            query = """
+            select result, count(result) as number
+            from games
+            group by result
+            """
+            df = pd.read_sql_query(query, self.__db)
+            return df
+        except Exception as e:
+            print(f"Error reading player_summary_result : {e}")
+            return pd.DataFrame({})
+        
+    
+        
     def read_db(self, query: str):
         try:
             return pd.read_sql_query(query, self.__db)
