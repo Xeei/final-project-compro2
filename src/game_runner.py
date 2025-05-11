@@ -2,6 +2,7 @@ import pygame as pg
 from config import Config, GameState
 from game_ui import GameUI
 
+
 class GameRunner:
     def __init__(self):
         pg.init()
@@ -39,7 +40,7 @@ class GameRunner:
 
         pg.quit()
 
+
 if __name__ == "__main__":
     g = GameRunner()
     g.game_loop()
-

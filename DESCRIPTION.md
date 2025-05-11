@@ -26,15 +26,16 @@ This version of Blackjack introduces **special skills/cards** that help the play
 ### 3.2 Object-Oriented Programming Implementation
 
 The game is designed using **Object-Oriented Programming (OOP)**. A UML diagram is created in Lucidchart to visualize the structure.
-
+<image src="./document/UML.png"/>
 **Main Classes:**
 
 -   `Card`: Represents a playing card with suit and value.
 -   `Deck`: Handles deck creation, shuffling, and drawing cards.
 -   `Player`: Tracks player's hand, score, and actions.
 -   `Dealer`: Inherits from Player but follows different rules for drawing.
--   `Game`: Manages the overall game flow and logic.
--   `SpecialCard`: Subclass or handler for unique card effects.
+-   `GameUI`: Handle events in game.
+-   `GameDb`: Manages data and store data.
+-   `App`: Combine game and visualization program.
 
 ### 3.3 Algorithms Involved
 
@@ -51,7 +52,6 @@ The game will collect the following data each round:
 -   Number of cards played by the player.
 -   Total score of the player each round.
 -   Win/Loss outcome.
--   Amount the player bet each round.
 -   Time taken for each decision made by the player.
 
 ## Feature Data Collection and Usage
@@ -73,15 +73,31 @@ The game will collect the following data each round:
 | **Graph3**           | Time Used per Decision          | Show how long player takes to make decisions based on score | Scatter Plot (Hue = Hit/Stand) | Score      | Time Used                 |
 | **Table**            | Cards Player Has Each Round     | Show detailed data of player’s cards each round             | Table                          | -          | -                         |
 
-## 3.2 Data Recording Method
+### Frequecy of score
+
+<image src="./screenshots/visualization/histogram.png"/>
+
+### Porpotion of WIN/LOST/TIE
+
+<image src="./screenshots/visualization/piechart.png"/>
+
+### Pair between score and decision time use
+
+<image src="./screenshots/visualization/pair.png"/>
+
+### Data table
+
+<image src="./screenshots/visualization/table.png"/>
+
+## 4.2 Data Recording Method
 
 Record data in sql(sqlite) game will store data of how many player had play. How many time win/lose. and what score that he win with.
 
-## 3.3 Data Analysis Report
+## 4.3 Data Analysis Report
 
 win rate base on number of card and win rate base on score
 
-## 4. Project Timeline
+## 5. Project Timeline
 
 | **Week** | **Date** | **Task**                                 |
 | -------- | -------- | ---------------------------------------- |
@@ -91,3 +107,7 @@ win rate base on number of card and win rate base on score
 | Week 4   | 31 March | Game UI                                  |
 | Week 5   | 7 April  | Report UI                                |
 | Week 6   | 14 April | Submission week (Draft)                  |
+
+## 6. Video Presentation
+
+-   [youtube link](https://youtu.be/4vk-7XwjIeE)

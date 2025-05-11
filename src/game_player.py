@@ -1,16 +1,15 @@
 from game_card import Deck, Card
 from config import Config
 from game_utils import GameUtils
-import pygame as pg
 import os
-from datetime import datetime
+
 
 class Entity:
     def __init__(self, screen):
         self._cards: list[Card] = []
         self._screen = screen
 
-    def deal_card(self, deck:  Deck) -> Card:
+    def deal_card(self, deck: Deck) -> Card:
         card = deck.deal()
         self._cards.append(card)
         return card
@@ -31,21 +30,22 @@ class Entity:
             return max(valid_scores)
         else:
             return min(possible_scores)
-    
+
     @property
     def is_bust(self):
         if self.score > 21:
             return True
         return False
-    
+
     def render(self, x, y, is_dealer=False, is_end_phase=False):
         for index, card in enumerate(self._cards):
             if is_dealer and index == 1 and not is_end_phase:
-                back_card_path = os.path.join(Config.image_path, f"purple_back.png")
+                back_card_path = os.path.join(Config.image_path, "purple_back.png")
                 hidden_card = GameUtils.load_card_image(back_card_path, 150)
                 self._screen.blit(hidden_card, (x + index * 80, y))
             else:
-                self._screen.blit(card.image, (x + index * 80, y)) 
+                self._screen.blit(card.image, (x + index * 80, y))
+
 
 class Dealer(Entity):
     def __init__(self, screen):
@@ -63,7 +63,7 @@ class Dealer(Entity):
         # print(self.score)
         # print("="*30)
 
-                
+
 class Player(Entity):
     def __init__(self, screen):
         super().__init__(screen)

@@ -16,7 +16,7 @@ class GameDb:
         return cls._instance
 
     def __init_db(self):
-        self.__db = sql.connect('db/db.db')
+        self.__db = sql.connect("db/db.db")
         self.__cursor = self.__db.cursor()
 
     def create_table(self):
@@ -51,8 +51,7 @@ class GameDb:
         except Exception as e:
             print(f"Error creating table: {e}")
 
-    def insert_game(self, start_time, end_time,
-                    player_score, dealer_score, result):
+    def insert_game(self, start_time, end_time, player_score, dealer_score, result):
         query = """
         INSERT INTO games (game_id, start_time, end_time,
         player_score, dealer_score, result)
@@ -61,8 +60,10 @@ class GameDb:
         game_id = str(uuid.uuid4())
 
         try:
-            self.__cursor.execute(query, (game_id, start_time, end_time,
-                                          player_score, dealer_score, result))
+            self.__cursor.execute(
+                query,
+                (game_id, start_time, end_time, player_score, dealer_score, result),
+            )
             self.__db.commit()
             print(f"Game inserted with ID: {game_id}")
             return game_id
@@ -83,14 +84,31 @@ class GameDb:
 
             for ev in events:
                 if ev.name == "stand":
-                    self.__cursor.execute(query, (
-                        game_id, ev.name, None, None,
-                        ev.time, ev.before_score, ev.after_score))
+                    self.__cursor.execute(
+                        query,
+                        (
+                            game_id,
+                            ev.name,
+                            None,
+                            None,
+                            ev.time,
+                            ev.before_score,
+                            ev.after_score,
+                        ),
+                    )
                 elif ev.name == "hit":
-                    self.__cursor.execute(query, (
-                        game_id, ev.name, ev.card.symbol,
-                        ev.card.number, ev.time,
-                        ev.before_score, ev.after_score))
+                    self.__cursor.execute(
+                        query,
+                        (
+                            game_id,
+                            ev.name,
+                            ev.card.symbol,
+                            ev.card.number,
+                            ev.time,
+                            ev.before_score,
+                            ev.after_score,
+                        ),
+                    )
                 else:
                     raise ValueError("Invalid ev.name")
             self.__db.commit()

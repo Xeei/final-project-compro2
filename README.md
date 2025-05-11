@@ -8,6 +8,13 @@
 
 ### Installation
 
+0. clone project
+
+```bash
+    git clone https://github.com/Xeei/final-project-compro2.git
+    cd final-project-compro2
+```
+
 1. activate .venv
 
     - window (cmd not shell!!!)
@@ -26,7 +33,7 @@
 
 2. set up env
     ```bash
-    python -r pip install -r requirements.txt
+    python -m pip install -r requirements.txt
     ```
 
 ### Start game
@@ -57,7 +64,7 @@
 
 ### Step to play the game
 
-1. Menu Page - click on play text to start the game
+1. Menu Page - click on `Start Game` button to start the game
    <image src="./screenshots/gameplay/start_menu.png">
 2. Player phase
 
